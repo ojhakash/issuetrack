@@ -1,0 +1,67 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header"><strong>Report Issue</strong></div>
+        <div class="card-body">
+          <form [formGroup]="reportIssueForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="name">Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    placeholder="Enter Title"
+                    formControlName="title"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="name">Assign to</label>
+                  <input
+                    type="text"
+                    class="form-control typeahead border-primary"
+                    id="typeahead-basic"
+                    formControlName="assignedTo"
+                    [ngbTypeahead]="search"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="ccnumber">Give details about the issue</label>
+                  <textarea
+                    rows="8"
+                    [froalaEditor]="froalaOptions"
+                    formControlName="description"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <!-- /.row -->
+
+            <div class="card-footer ml-auto">
+              <button type="reset" class="btn btn-sm btn-danger">
+                <i class="fa fa-ban"></i> Reset
+              </button>
+              <button type="submit" class="btn btn-sm btn-primary ml-2">
+                <i class="fa fa-dot-circle-o"></i> Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</div>

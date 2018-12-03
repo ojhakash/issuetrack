@@ -1,0 +1,55 @@
+<div class="animated fadeIn">
+  <!-- /.row -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Issue Details
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered table-striped table-sm">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Reporter</th>
+                <th>Date Reprted</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="singleIssue"
+                *ngFor="let issue of issues"
+                (click)="goToEditissue(issue.issueId)"
+              >
+                <td>{{ issue.title }}</td>
+                <td>
+                  {{ issue.reportedBy.firstName }}
+                  {{ issue.reportedBy.lastName }}
+                </td>
+                <td>{{ issue.createdAt | date: "mediumDate" }}</td>
+                <td>
+                  <span class="badge badge-success">{{ issue.status }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <nav>
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</div>

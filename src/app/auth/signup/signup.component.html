@@ -1,0 +1,169 @@
+<div class="app-body" style="height:100vh;">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card mx-4">
+            <div class="card-body p-4">
+              <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+                <h1>Register</h1>
+                <p class="text-muted">Create your account</p>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"
+                          ><i class="icon-user"></i
+                        ></span>
+                      </div>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="FirstName"
+                        autocomplete="firstname"
+                        formControlName="firstName"
+                        required
+                      />
+                    </div>
+                    <div
+                      *ngIf="
+                        !signupForm.get('firstName').valid &&
+                        signupForm.get('firstName').touched
+                      "
+                      class="text-danger text-center"
+                    >
+                      First name is a required field!
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"
+                          ><i class="icon-user"></i
+                        ></span>
+                      </div>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="LatName"
+                        autocomplete="lastname"
+                        formControlName="lastName"
+                        required
+                      />
+                    </div>
+                    <div
+                      *ngIf="
+                        !signupForm.get('lastName').valid &&
+                        signupForm.get('lastName').touched
+                      "
+                      class="text-danger text-center"
+                    >
+                      Last name is a required field!
+                    </div>
+                  </div>
+                </div>
+                <div class="input-group mt-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">@</span>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Email"
+                    autocomplete="email"
+                    formControlName="email"
+                    required
+                  />
+                </div>
+                <div
+                  *ngIf="
+                    !signupForm.get('email').valid &&
+                    signupForm.get('email').touched
+                  "
+                  class="text-danger text-center"
+                >
+                  Please enter a valid email!
+                </div>
+                <div class="input-group mt-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">@</span>
+                  </div>
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Phone"
+                    autocomplete="phone"
+                    formControlName="mobileNumber"
+                    required
+                  />
+                </div>
+                <div
+                  *ngIf="
+                    !signupForm.get('mobileNumber').valid &&
+                    signupForm.get('mobileNumber').touched
+                  "
+                  class="text-danger text-center"
+                >
+                  Please enter a valid mobile number!
+                </div>
+
+                <div class="input-group mt-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i class="icon-lock"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Password"
+                    autocomplete="new-password"
+                    formControlName="password"
+                    required
+                  />
+                </div>
+                <div
+                  *ngIf="
+                    !signupForm.get('password').valid &&
+                    signupForm.get('password').touched
+                  "
+                  class="text-danger text-center"
+                >
+                  Pasword should atleast have 8 characters!
+                </div>
+                <div class="input-group mt-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i class="icon-lock"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Repeat password"
+                    autocomplete="new-password"
+                    formControlName="repeatPassword"
+                    required
+                  />
+                </div>
+                <div
+                  *ngIf="
+                    !signupForm.get('repeatPassword').valid &&
+                    signupForm.get('repeatPassword').touched
+                  "
+                  class="text-danger text-center"
+                >
+                  Pasword doesn't get matched!
+                </div>
+
+                <button type="submit" class="btn btn-block btn-success mt-4">
+                  Create Account
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

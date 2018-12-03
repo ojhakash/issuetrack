@@ -1,0 +1,130 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header"><strong>Report Issue</strong></div>
+        <div class="card-body">
+          <form [formGroup]="editIssueForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="name">Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    placeholder="Enter Title"
+                    formControlName="title"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="name">Assign to</label>
+                  <input
+                    type="text"
+                    class="form-control typeahead border-primary"
+                    id="typeahead-basic"
+                    formControlName="assignedTo"
+                    [ngbTypeahead]="search"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="ccnumber">Give details about the issue</label>
+                  <textarea
+                    rows="8"
+                    [froalaEditor]="froalaOptions"
+                    formControlName="description"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="ccmonth">Status</label>
+                  <select
+                    class="form-control"
+                    id="ccmonth"
+                    formControlName="status"
+                  >
+                    <option value="inProgress">In Progress</option>
+                    <option value="inTest">In Test</option>
+                    <option value="done">Done</option>
+                    <option value="backlog">Backlog</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- /.row -->
+            <div class="card-footer ml-auto">
+              <button type="reset" class="btn btn-sm btn-danger">
+                <i class="fa fa-ban"></i> Reset
+              </button>
+              <button type="submit" class="btn btn-sm btn-primary ml-2">
+                <i class="fa fa-dot-circle-o"></i> Update
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /.col -->
+    <div class="col-md-4">
+      <div class="detailBox">
+        <div class="titleBox"><label>Comments</label></div>
+        <div class="commentBox">
+          <p class="taskDescription">
+            <!-- <b>{{ comments.length }} <span>comments</span></b> -->
+          </p>
+        </div>
+        <div class="actionBox">
+          <ul class="commentList">
+            <li *ngFor="let comment of comments">
+              <div class="commenterImage">
+                <img src="http://placekitten.com/50/50" />
+              </div>
+              <div class="commentText" style="width:22em;">
+                <div>
+                  <p class="">{{ comment.comment }}</p>
+                  <span class="date sub-text">{{
+                    comment.createdAt | date: "medium"
+                  }}</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <form
+            class="form-inline"
+            role="form"
+            [formGroup]="commentForm"
+            (ngSubmit)="onCommentSubmit()"
+          >
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="text"
+                placeholder="Your comments"
+                formControlName="comment"
+              />
+            </div>
+            <div class="form-group">
+              <button class="btn btn-default" type="submit">Add</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</div>
