@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -14,14 +14,17 @@ import { log } from "util";
   styleUrls: ["./edit-issue.component.scss"]
 })
 export class EditIssueComponent implements OnInit {
-  editIssueForm: FormGroup;
-  commentForm: FormGroup;
-  html: any;
-  froalaOptions: any;
-  routeParams: any;
+  public editIssueForm: FormGroup;
+  public commentForm: FormGroup;
+  public html: any;
+  public froalaOptions: any;
+  public routeParams: any;
+  public title: any;
   public comments: Array<any>;
   public users: Array<any>;
   public userObjects: Array<any>;
+  public watcher: boolean;
+  public commentId: String;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -68,8 +71,6 @@ export class EditIssueComponent implements OnInit {
   ngOnInit() {
     this.appService.getUsers().subscribe(
       apiResponse => {
-        console.log(apiResponse);
-
         if (apiResponse.status === 200) {
           this.userObjects = apiResponse.data;
           this.users = apiResponse.data.map(user => user.email);
@@ -101,13 +102,10 @@ export class EditIssueComponent implements OnInit {
       status: new FormControl(null, [Validators.required])
     });
 
-    this.editIssueForm.statusChanges.subscribe(status =>
-      console.log(status, this.editIssueForm.valid)
-    );
-
     this.appService.getIssueDetails(this.routeParams.issueId).subscribe(
       apiResponse => {
         if (apiResponse.status == 200) {
+          this.title = apiResponse.data.title;
           this.editIssueForm.setValue({
             title: apiResponse.data.title,
             assignedTo: apiResponse.data.assignedTo.email,
@@ -125,6 +123,18 @@ export class EditIssueComponent implements OnInit {
       }
     );
 
+    this.appService.checkIfWatcher(this.routeParams.issueId).subscribe(
+      apiResponse => {
+        if (apiResponse.status == 200) {
+          this.watcher = true;
+        } else {
+          this.watcher = false;
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    );
     //comment form
     this.commentForm = new FormGroup({
       comment: new FormControl(null, [Validators.required])
@@ -143,6 +153,8 @@ export class EditIssueComponent implements OnInit {
       apiResponse => {
         if (apiResponse.status == 200) {
           this.comments = apiResponse.data;
+        } else if (apiResponse.message == "No Comment Found") {
+          this.comments = [];
         } else {
           this.toastr.error(
             apiResponse.message || "error occurred.please try again!"
@@ -172,7 +184,6 @@ export class EditIssueComponent implements OnInit {
           .updateIssue(formData, this.routeParams.issueId)
           .subscribe(
             apiResponse => {
-              console.log(apiResponse);
               if (apiResponse.status == 200) {
                 this.toastr.success(apiResponse.message);
               } else {
@@ -218,4 +229,72 @@ export class EditIssueComponent implements OnInit {
       this.toastr.error("please fill all the required fields");
     }
   }
+
+  onCommentDeleteBtnClicked(commentId) {
+    this.commentId = commentId;
+  }
+
+  onRemoveComment() {
+    this.appService.removeComment(this.commentId).subscribe(
+      response => {
+        if (response.status == 200) {
+          this.getComments();
+        } else {
+          this.toastr.error(response.message);
+        }
+      },
+      err => {
+        this.toastr.warning("please try again after some time!");
+      }
+    );
+  }
+
+  followIssue = () => {
+    this.appService.addWatcher({ issueId: this.routeParams.issueId }).subscribe(
+      apiResponse => {
+        this.toastr.success(apiResponse.message);
+        if (apiResponse.status == 200) {
+          this.watcher = true;
+        } else {
+          this.watcher = false;
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  };
+
+  unFollowIssue = () => {
+    this.appService.removeWatcher(this.routeParams.issueId).subscribe(
+      apiResponse => {
+        if (apiResponse.status == 200) {
+          this.toastr.success(apiResponse.message);
+          this.watcher = false;
+        } else {
+          this.watcher = true;
+          this.toastr.error(apiResponse.message);
+        }
+      },
+      err => {
+        this.toastr.warning("please try again!");
+      }
+    );
+  };
+
+  removeIssue = () => {
+    this.appService.removeIssue(this.routeParams.issueId).subscribe(
+      apiResponse => {
+        if (apiResponse.status == 200) {
+          this.toastr.success(apiResponse.message);
+          this.router.navigateByUrl("/home/dashboard");
+        } else {
+          this.toastr.error(apiResponse.message);
+        }
+      },
+      err => {
+        this.toastr.warning("please try again!");
+      }
+    );
+  };
 }

@@ -6,12 +6,29 @@
       <div class="form-group row">
         <div class="col-md-12">
           <div class="input-group">
+            <label for="" class="pt-2">Start : </label>
             <input
-              type="text"
+              type="date"
               id="input1-group2"
               name="input1-group2"
-              class="form-control"
+              class="form-control ml-2"
+              placeholder="Start Date"
+              [(ngModel)]="startDate"
+            />
+            <span class="input-group-prepend mr-2">
+              <button type="button" class="btn btn-primary">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+
+            <label for="" class="pt-2 ml-2">End : </label>
+            <input
+              type="date"
+              id="input1-group2"
+              name="input1-group2"
+              class="form-control ml-2"
               placeholder="Search Text"
+              [(ngModel)]="endDate"
             />
             <span class="input-group-prepend">
               <button type="button" class="btn btn-primary">
@@ -22,7 +39,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="padding-right:0;">
           <div class="card">
             <div class="card-header">
               <i class="fa fa-align-justify"></i> Issue Details
@@ -40,7 +57,11 @@
                 <tbody>
                   <tr
                     class="singleIssue"
-                    *ngFor="let issue of issues"
+                    *ngFor="
+                      let issue of (issues
+                        | startDateFilter: startDate
+                        | endDateFilter: endDate)
+                    "
                     (click)="goToEditissue(issue.issueId)"
                   >
                     <td>{{ issue.title }}</td>
@@ -57,19 +78,80 @@
                   </tr>
                 </tbody>
               </table>
-              <nav>
+              <nav *ngIf="totalPages > 1">
                 <ul class="pagination">
                   <li class="page-item">
-                    <a class="page-link" href="#">Prev</a>
+                    <div
+                      class="page-link"
+                      (click)="getAllFilteredIssues(currentPage - 1)"
+                    >
+                      Prev
+                    </div>
                   </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
+                  <li
+                    [ngClass]="{ 'page-item': true, active: currentPage == 1 }"
+                  >
+                    <div
+                      [ngClass]="{ 'page-link': true }"
+                      (click)="getAllFilteredIssues(1)"
+                    >
+                      1
+                    </div>
                   </li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">4</a></li>
+                  <li
+                    [ngClass]="{ 'page-item': true, active: currentPage == 2 }"
+                  >
+                    <div class="page-link" (click)="getAllFilteredIssues(2)">
+                      2
+                    </div>
+                  </li>
+                  <li
+                    [ngClass]="{ 'page-item': true, active: currentPage == 3 }"
+                  >
+                    <div class="page-link" *ngIf="currentPage > 3">...</div>
+                  </li>
+                  <li
+                    [ngClass]="{
+                      'page-item': true,
+                      active: currentPage == currentPage
+                    }"
+                  >
+                    <div
+                      class="page-link"
+                      *ngIf="currentPage > 2 && totalPages > currentPage"
+                    >
+                      {{ currentPage }}
+                    </div>
+                  </li>
+                  <li [ngClass]="{ 'page-item': true }">
+                    <div
+                      class="page-link"
+                      *ngIf="totalPages > 3 && totalPages - 1 > currentPage"
+                    >
+                      ...
+                    </div>
+                  </li>
+                  <li
+                    [ngClass]="{
+                      'page-item': true,
+                      active: currentPage == totalPages
+                    }"
+                  >
+                    <div
+                      class="page-link"
+                      *ngIf="totalPages > 4"
+                      (click)="getAllFilteredIssues(totalPages)"
+                    >
+                      {{ totalPages }}
+                    </div>
+                  </li>
                   <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <div
+                      class="page-link"
+                      (click)="getAllFilteredIssues(currentPage + 1)"
+                    >
+                      Next
+                    </div>
                   </li>
                 </ul>
               </nav>
@@ -82,7 +164,7 @@
     <div class="col-md-3 card">
       <div class="card-header"><strong>Search Issue</strong></div>
       <div class="card-body">
-        <form>
+        <form [formGroup]="searchIssueForm" (ngSubmit)="onSubmit()">
           <div class="input-group mb-4">
             <input
               type="text"
@@ -90,6 +172,7 @@
               name="input1-group2"
               class="form-control"
               placeholder="Title"
+              formControlName="title"
             />
             <span class="input-group-prepend">
               <button type="submit" class="btn btn-primary">
@@ -99,11 +182,13 @@
           </div>
           <div class="input-group mb-4">
             <input
-              type="text"
+              type="email"
               id="input1-group2"
               name="input1-group2"
               class="form-control"
               placeholder="Reporter"
+              [ngbTypeahead]="search"
+              formControlName="reporter"
             />
             <span class="input-group-prepend">
               <button type="submit" class="btn btn-primary">
@@ -112,22 +197,12 @@
             </span>
           </div>
           <div class="input-group mb-4">
-            <input
-              type="date"
-              id="input1-group2"
-              name="input1-group2"
-              min="Date()"
+            <select
+              id="select1"
+              name="select1"
               class="form-control"
-              placeholder="Date"
-            />
-            <span class="input-group-prepend">
-              <button type="submit" class="btn btn-primary">
-                <i class="fa fa-search"></i>
-              </button>
-            </span>
-          </div>
-          <div class="input-group mb-4">
-            <select id="select1" name="select1" class="form-control">
+              formControlName="status"
+            >
               <option value="inProgress">In Progress</option>
               <option value="inTest">In Test</option>
               <option value="done">Done</option>

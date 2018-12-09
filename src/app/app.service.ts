@@ -14,7 +14,7 @@ import {
 
 @Injectable()
 export class AppService {
-  private url = "http://localhost:3000";
+  private url = "http://ec2-34-207-99-161.compute-1.amazonaws.com";
 
   constructor(public http: HttpClient) {} // end constructor
 
@@ -45,8 +45,19 @@ export class AppService {
     return this.http.post(`${this.url}/api/v1/users/login`, params);
   } // end of signinFunction function.
 
+  public getUserDetails(): Observable<any> {
+    const params = new HttpParams().set(
+      "authToken",
+      localStorage.getItem("authToken")
+    );
+    return this.http.get(`${this.url}/api/v1/users/details`, { params });
+  }
+
   public logout(): Observable<any> {
-    const params = new HttpParams().set("authToken", Cookie.get("authtoken"));
+    const params = new HttpParams().set(
+      "authToken",
+      localStorage.getItem("authToken")
+    );
 
     return this.http.post(`${this.url}/api/v1/users/logout`, params);
   } // end logout function
@@ -62,12 +73,12 @@ export class AppService {
 
   // issue ajax start
 
-  public getIssues(): Observable<any> {
+  public getIssues(pageNo): Observable<any> {
     const params = new HttpParams().set(
       "authToken",
       localStorage.getItem("authToken")
     );
-    return this.http.get(`${this.url}/api/v1/issue/all`, { params });
+    return this.http.get(`${this.url}/api/v1/issue/all/${pageNo}`, { params });
   }
 
   public addIssue(data): Observable<any> {
@@ -99,6 +110,16 @@ export class AppService {
     return this.http.get(`${this.url}/api/v1/issue/${issueId}`, { params });
   }
 
+  public removeIssue(issueId): Observable<any> {
+    const params = new HttpParams().set(
+      "authToken",
+      localStorage.getItem("authToken")
+    );
+    return this.http.delete(`${this.url}/api/v1/issue/${issueId}/remove`, {
+      params
+    });
+  }
+
   // end of issue ajax calls
 
   public getAllComments(issueId): Observable<any> {
@@ -112,13 +133,73 @@ export class AppService {
   }
 
   public addComment(data): Observable<any> {
+    const params = new HttpParams()
+      .set("authToken", localStorage.getItem("authToken"))
+      .set("comment", data.comment)
+      .set("issueId", data.issueId);
+    return this.http.post(`${this.url}/api/v1/comment/add`, params);
+  }
+
+  public removeComment(commentId): Observable<any> {
     const params = new HttpParams().set(
       "authToken",
-      localStorage.getItem("authToken"))
-      .set("comment",data.comment)
-      .set("issueId",data.issueId)
+      localStorage.getItem("authToken")
     );
-    return this.http.post(`${this.url}/api/v1/comment/add`,params);
+    return this.http.delete(`${this.url}/api/v1/comment/${commentId}/remove`, {
+      params
+    });
+  }
+
+  public getFilteredIssues(data, pageNo): Observable<any> {
+    const params = new HttpParams()
+      .set("authToken", localStorage.getItem("authToken"))
+      .set("title", data.title)
+      .set("status", data.status)
+      .set("reporterId", data.reporterId);
+
+    return this.http.get(`${this.url}/api/v1/issue/filtered/${pageNo}`, {
+      params
+    });
+  }
+  //watcher apis
+  public addWatcher(data): Observable<any> {
+    const params = new HttpParams()
+      .set("authToken", localStorage.getItem("authToken"))
+      .set("issueId", data.issueId);
+
+    return this.http.post(`${this.url}/api/v1/watcher/add`, params);
+  }
+
+  public removeWatcher(issueId): Observable<any> {
+    const params = new HttpParams().set(
+      "authToken",
+      localStorage.getItem("authToken")
+    );
+
+    return this.http.delete(`${this.url}/api/v1/watcher/remove/${issueId}`, {
+      params
+    });
+  }
+
+  public checkIfWatcher(issueId): Observable<any> {
+    const params = new HttpParams().set(
+      "authToken",
+      localStorage.getItem("authToken")
+    );
+
+    return this.http.get(
+      `${this.url}/api/v1/watcher/checkifwatcher/${issueId}`,
+      { params }
+    );
+  }
+
+  public getAllNotification(): Observable<any> {
+    const params = new HttpParams().set(
+      "authToken",
+      localStorage.getItem("authToken")
+    );
+
+    return this.http.get(`${this.url}/api/v1/notification/all`, { params });
   }
 
   private handleError(err: HttpErrorResponse) {

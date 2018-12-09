@@ -2,28 +2,16 @@ export const navItems = [
   {
     name: "Dashboard",
     url: "/home/dashboard",
-    icon: "icon-speedometer",
-    badge: {
-      variant: "info",
-      text: "NEW"
-    }
+    icon: "icon-list"
   },
   {
     name: "Report Issue",
     url: "/home/reportissue",
-    icon: "icon-speedometer",
-    badge: {
-      variant: "info",
-      text: "NEW"
-    }
+    icon: "icon-plus"
   },
   {
     name: "Search Issue",
     url: "/home/searchissue",
-    icon: "icon-speedometer",
-    badge: {
-      variant: "info",
-      text: "NEW"
-    }
+    icon: "icon-magnifier"
   }
 ];

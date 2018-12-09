@@ -1,9 +1,9 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
-import { NgxTypeaheadModule } from "ngx-typeahead";
 import { HttpClientModule } from "@angular/common/http";
 import { NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgxPaginationModule } from "ngx-pagination";
 
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
@@ -18,14 +18,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 import { AppComponent } from "./app.component";
 
 // Import containers
-import { DefaultLayoutComponent } from "./containers";
+// import { DefaultLayoutComponent } from "./containers";
 
-import { P404Component } from "./views/error/404.component";
-import { P500Component } from "./views/error/500.component";
-import { LoginComponent } from "./views/login/login.component";
-import { RegisterComponent } from "./views/register/register.component";
+// import { P404Component } from "./views/error/404.component";
+// import { P500Component } from "./views/error/500.component";
+// import { LoginComponent } from "./views/login/login.component";
+// import { RegisterComponent } from "./views/register/register.component";
 
-const APP_CONTAINERS = [DefaultLayoutComponent];
+// const APP_CONTAINERS = [DefaultLayoutComponent];
 
 import {
   AppAsideModule,
@@ -46,6 +46,7 @@ import { ToastrModule } from "ngx-toastr";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { AuthModule } from "./auth/auth.module";
+import { SharedModule } from "./shared/shared.module";
 import { HomeComponent } from "./home/home.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { ReportIssueComponent } from "./report-issue/report-issue.component";
@@ -53,16 +54,20 @@ import { FroalaEditorModule, FroalaViewModule } from "angular-froala-wysiwyg";
 import { SearchIssueComponent } from "./search-issue/search-issue.component";
 import { AppService } from "./app.service";
 import { EditIssueComponent } from "./edit-issue/edit-issue.component";
+import { StartDateFilterPipe } from "./shared/pipe/start-date-filter.pipe";
+import { EndDateFilterPipe } from "./shared/pipe/end-date-filter.pipe";
+import { P404Component } from "./error/error.component";
 
 @NgModule({
   imports: [
     FormsModule,
     ReactiveFormsModule,
     NgbTypeaheadModule,
-    NgxTypeaheadModule,
+    NgxPaginationModule,
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     HttpClientModule,
+    SharedModule,
     AuthModule,
     BrowserModule,
     AppRoutingModule,
@@ -79,16 +84,14 @@ import { EditIssueComponent } from "./edit-issue/edit-issue.component";
   ],
   declarations: [
     AppComponent,
-    ...APP_CONTAINERS,
-    P404Component,
-    P500Component,
-    LoginComponent,
-    RegisterComponent,
     HomeComponent,
     DashboardComponent,
     ReportIssueComponent,
     SearchIssueComponent,
-    EditIssueComponent
+    EditIssueComponent,
+    StartDateFilterPipe,
+    EndDateFilterPipe,
+    P404Component
   ],
   providers: [
     AppService,

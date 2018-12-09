@@ -64,8 +64,6 @@ export class ReportIssueComponent implements OnInit {
   ngOnInit() {
     this.appService.getUsers().subscribe(
       apiResponse => {
-        console.log(apiResponse);
-
         if (apiResponse.status === 200) {
           this.userObjects = apiResponse.data;
           this.users = apiResponse.data.map(user => user.email);
@@ -93,10 +91,6 @@ export class ReportIssueComponent implements OnInit {
       ])
     });
 
-    this.reportIssueForm.statusChanges.subscribe(status =>
-      console.log(status, this.reportIssueForm.valid)
-    );
-
     this.reportIssueForm.setValue({
       title: "",
       assignedTo: "",
@@ -117,7 +111,6 @@ export class ReportIssueComponent implements OnInit {
 
       this.appService.addIssue(formData).subscribe(
         apiResponse => {
-          console.log(apiResponse);
           if (apiResponse.status == 200) {
             this.toastr.success(apiResponse.message);
             this.router.navigateByUrl(

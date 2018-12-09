@@ -28,10 +28,6 @@ export class LoginComponent implements OnInit {
       ])
     });
 
-    this.loginForm.statusChanges.subscribe(status =>
-      console.log(status, this.loginForm.valid)
-    );
-
     this.loginForm.setValue({
       email: "",
       password: ""
@@ -47,10 +43,9 @@ export class LoginComponent implements OnInit {
       // console.log(this.loginForm.value);
       this.appService.signinFunction(this.loginForm.value).subscribe(
         apiResponse => {
-          console.log(apiResponse);
-
           if (apiResponse.status === 200) {
             localStorage.setItem("authToken", apiResponse.data.authToken);
+            localStorage.setItem("userId", apiResponse.data.userDetails.userId);
             this.toastr.success("Signup successful");
 
             this.goToHome();
@@ -59,7 +54,6 @@ export class LoginComponent implements OnInit {
           }
         },
         err => {
-          console.log(err);
           this.toastr.error("some error occured");
         }
       );

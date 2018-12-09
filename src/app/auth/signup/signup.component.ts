@@ -51,9 +51,6 @@ export class SignupComponent implements OnInit {
     // this.signupForm.valueChanges.subscribe(
     //   (value) => console.log(value)
     // );
-    this.signupForm.statusChanges.subscribe(status =>
-      console.log(status, this.signupForm.valid)
-    );
 
     this.signupForm.setValue({
       firstName: "",
@@ -70,8 +67,6 @@ export class SignupComponent implements OnInit {
       //console.log(this.signupForm.value);
       this.appService.signupFunction(this.signupForm.value).subscribe(
         apiResponse => {
-          console.log(apiResponse);
-
           if (apiResponse.status === 200) {
             this.toastr.success("Signup successful");
 

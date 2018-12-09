@@ -2,7 +2,26 @@
   <div class="row">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header"><strong>Report Issue</strong></div>
+        <div class="card-header row justify-content-between mx-4">
+          <div><strong>Edit Issue</strong></div>
+          <button
+            type="reset"
+            class="btn btn-sm btn-primary"
+            *ngIf="!watcher"
+            (click)="followIssue()"
+          >
+            Follow
+          </button>
+
+          <button
+            type="reset"
+            class="btn btn-sm btn-primary"
+            *ngIf="watcher"
+            (click)="unFollowIssue()"
+          >
+            Un-Follow
+          </button>
+        </div>
         <div class="card-body">
           <form [formGroup]="editIssueForm" (ngSubmit)="onSubmit()">
             <div class="row">
@@ -71,13 +90,69 @@
                 <i class="fa fa-ban"></i> Reset
               </button>
               <button type="submit" class="btn btn-sm btn-primary ml-2">
-                <i class="fa fa-dot-circle-o"></i> Update
+                <i class="fa fa-edit"></i> Update
               </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-primary"
+                style="float:right;margin-top:1em;"
+                data-toggle="modal"
+                data-target="#exampleModalCenter"
+              >
+                <i class="fa fa-trash-o"></i> Remove Issue
+              </button>
+
+              <div
+                class="modal fade"
+                id="exampleModalCenter"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalCenterTitle"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">
+                        Remove Issue "{{ title }}"
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to remove this issue parmanently?
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        (click)="removeIssue()"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </form>
         </div>
       </div>
     </div>
+
     <!-- /.col -->
     <div class="col-md-4">
       <div class="detailBox">
@@ -90,16 +165,26 @@
         <div class="actionBox">
           <ul class="commentList">
             <li *ngFor="let comment of comments">
-              <div class="commenterImage">
-                <img src="http://placekitten.com/50/50" />
-              </div>
               <div class="commentText" style="width:22em;">
                 <div>
                   <p class="">{{ comment.comment }}</p>
                   <span class="date sub-text">{{
                     comment.createdAt | date: "medium"
                   }}</span>
+                  <br />
+                  <small
+                    >Commented By: {{ comment.commentedBy.firstName }}
+                    {{ comment.commentedBy.lastName }}</small
+                  >
                 </div>
+              </div>
+              <div
+                data-toggle="modal"
+                data-target="#commentModalCenter"
+                style="cursor: pointer;"
+                (click)="onCommentDeleteBtnClicked(comment.commentId)"
+              >
+                <i class="fa fa-trash"></i>
               </div>
             </li>
           </ul>
@@ -125,6 +210,53 @@
       </div>
     </div>
     <!-- /.col -->
+    <!-- /.row -->
+
+    <div
+      class="modal fade"
+      id="commentModalCenter"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Remove Comment
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to remove this comment parmanently?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-dismiss="modal"
+              (click)="onRemoveComment()"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- /.row -->
 </div>
