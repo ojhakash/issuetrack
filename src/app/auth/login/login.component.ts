@@ -12,7 +12,7 @@ import { log } from "util";
   styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
-  private loginForm: FormGroup;
+  public loginForm: FormGroup;
   constructor(
     public appService: AppService,
     private router: Router,

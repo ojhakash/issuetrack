@@ -18,6 +18,8 @@ export class SearchIssueComponent implements OnInit {
   public filterString: String = "";
   public totalPages: Number;
   public currentPage: Number = 1;
+  public startDate: String;
+  public endDate: String;
   public searchIssueForm: FormGroup;
   public issues: Array<any>;
   public users: Array<any>;
