@@ -1,22 +1,7 @@
 {
-  "name": "@coreui/coreui-free-angular-admin-template",
+  "name": "issue-tracking-frontend",
   "version": "2.0.1",
-  "description": "CoreUI Free Angular 2+ Admin Template",
-  "author": {
-    "name": "Łukasz Holeczek",
-    "url": "http://holeczek.pl",
-    "github": "https://github.com/mrholek",
-    "twitter": "https://twitter.com/lukaszholeczek"
-  },
-  "contributors": [
-    {
-      "name": "Andrzej Kopański",
-      "url": "https://github.com/xidedix"
-    }
-  ],
-  "homepage": "https://coreui.io/angular",
-  "copyright": "Copyright 2018 creativeLabs Łukasz Holeczek",
-  "license": "MIT",
+  "description": "",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
