@@ -5,8 +5,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgbTypeaheadModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgxPaginationModule } from "ngx-pagination";
 
-import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
-
 import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { PERFECT_SCROLLBAR_CONFIG } from "ngx-perfect-scrollbar";
 import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
@@ -103,4 +101,3 @@ import { P404Component } from "./error/error.component";
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-platformBrowserDynamic().bootstrapModule(AppModule);

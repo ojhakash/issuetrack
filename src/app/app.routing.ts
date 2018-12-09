@@ -57,6 +57,7 @@ export const routes: Routes = [
       title: "Page 404"
     }
   },
+  { path: "", redirectTo: "/home/dashboard", pathMatch: "full" },
   { path: "**", redirectTo: "/404", pathMatch: "full" }
 ];
 
