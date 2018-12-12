@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import { Cookie } from "ng2-cookies/ng2-cookies";
 
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/do";
@@ -8,8 +7,7 @@ import "rxjs/add/operator/toPromise";
 import {
   HttpErrorResponse,
   HttpClient,
-  HttpParams,
-  HttpHeaders
+  HttpParams
 } from "@angular/common/http";
 
 @Injectable()
@@ -26,6 +24,7 @@ export class AppService {
     localStorage.setItem("userInfo", JSON.stringify(data));
   };
 
+  //user api start
   public signupFunction(data): Observable<any> {
     const params = new HttpParams()
       .set("firstName", data.firstName)
@@ -70,6 +69,8 @@ export class AppService {
 
     return this.http.get(`${this.url}/api/v1/users/view/all`, { params });
   }
+
+  //user api end
 
   // issue ajax start
 
@@ -120,8 +121,21 @@ export class AppService {
     });
   }
 
+  public getFilteredIssues(data, pageNo): Observable<any> {
+    const params = new HttpParams()
+      .set("authToken", localStorage.getItem("authToken"))
+      .set("title", data.title)
+      .set("status", data.status)
+      .set("reporterId", data.reporterId);
+
+    return this.http.get(`${this.url}/api/v1/issue/filtered/${pageNo}`, {
+      params
+    });
+  }
+
   // end of issue ajax calls
 
+  //comment api start
   public getAllComments(issueId): Observable<any> {
     const params = new HttpParams().set(
       "authToken",
@@ -149,19 +163,9 @@ export class AppService {
       params
     });
   }
+  //comment api end
 
-  public getFilteredIssues(data, pageNo): Observable<any> {
-    const params = new HttpParams()
-      .set("authToken", localStorage.getItem("authToken"))
-      .set("title", data.title)
-      .set("status", data.status)
-      .set("reporterId", data.reporterId);
-
-    return this.http.get(`${this.url}/api/v1/issue/filtered/${pageNo}`, {
-      params
-    });
-  }
-  //watcher apis
+  //watcher apis start
   public addWatcher(data): Observable<any> {
     const params = new HttpParams()
       .set("authToken", localStorage.getItem("authToken"))
@@ -192,7 +196,9 @@ export class AppService {
       { params }
     );
   }
+  //watcher apis end
 
+  //notification api start
   public getAllNotification(): Observable<any> {
     const params = new HttpParams().set(
       "authToken",
@@ -201,6 +207,8 @@ export class AppService {
 
     return this.http.get(`${this.url}/api/v1/notification/all`, { params });
   }
+
+  //notification apis end
 
   private handleError(err: HttpErrorResponse) {
     let errorMessage = "";
