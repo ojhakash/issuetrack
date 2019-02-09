@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
     public toastr: ToastrService,
     public appService: AppService
   ) {
-    this.socket = io("http://ec2-34-207-99-161.compute-1.amazonaws.com");
+    this.socket = io("http://94.237.72.184:9000");
     this.changes = new MutationObserver(mutations => {
       this.sidebarMinimized = document.body.classList.contains(
         "sidebar-minimized"

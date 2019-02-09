@@ -12,7 +12,7 @@ import {
 
 @Injectable()
 export class AppService {
-  private url = "http://ec2-34-207-99-161.compute-1.amazonaws.com";
+  private url = "http://94.237.72.184:9000";
 
   constructor(public http: HttpClient) {} // end constructor
 
